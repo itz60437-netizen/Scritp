@@ -1,0 +1,13 @@
+
+local player = game.Players.LocalPlayer
+ 
+local leaderstats = player:WaitForChild("leaderstats")
+local tokens = leaderstats:WaitForChild("Tokens")
+ 
+script.Parent.Text = "Tokens: "..tokens.Value
+ 
+tokens.Changed:Connect(function()
+    script.Parent.Text = "Tokens: "..tokens.Value
+end)
+ 
+
