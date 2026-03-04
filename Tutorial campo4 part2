@@ -1,0 +1,38 @@
+local tool = script.Parent
+local damage = 20
+
+local debounce = {}
+
+tool.Handle.Touched:Connect(function(hit)
+    
+    local humanoid = hit.Parent:FindFirstChild("Humanoid")
+    
+    if humanoid then
+        
+        local player = game.Players:GetPlayerFromCharacter(tool.Parent)
+        
+        if not player then return end
+        if debounce[humanoid] then return end
+        
+        debounce[humanoid] = true
+        
+        -- marcar quem deu dano
+        local tag = Instance.new("ObjectValue")
+        tag.Name = "creator"
+        tag.Value = player
+        tag.Parent = humanoid
+        
+        game.Debris:AddItem(tag,2)
+        
+        -- dar dano
+        humanoid:TakeDamage(damage)
+        
+        wait(1)
+        debounce[humanoid] = nil
+        
+    end
+    
+end)
+
+
+
