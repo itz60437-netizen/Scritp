@@ -1,0 +1,40 @@
+local DataStoreService = game:GetService("DataStoreService")
+local tokenStore = DataStoreService:GetDataStore("TokensSave")
+
+game.Players.PlayerAdded:Connect(function(player)
+    
+    -- criar leaderstats
+    local leaderstats = Instance.new("Folder")
+    leaderstats.Name = "leaderstats"
+    leaderstats.Parent = player
+    
+    local tokens = Instance.new("IntValue")
+    tokens.Name = "Tokens"
+    tokens.Parent = leaderstats
+    
+    -- carregar dados
+    local data
+    
+    local success, error = pcall(function()
+        data = tokenStore:GetAsync(player.UserId)
+    end)
+    
+    if success and data then
+        tokens.Value = data
+    else
+        tokens.Value = 0
+    end
+    
+end)
+
+
+game.Players.PlayerRemoving:Connect(function(player)
+    
+    local tokens = player.leaderstats.Tokens
+    
+    pcall(function()
+        tokenStore:SetAsync(player.UserId, tokens.Value)
+    end)
+    
+end)
+
