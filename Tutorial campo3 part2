@@ -1,0 +1,44 @@
+local function conectarHumanoid(humanoid)
+    
+    humanoid.Died:Connect(function()
+        
+        local tag = humanoid:FindFirstChild("creator")
+        
+        if tag and tag.Value then
+            
+            local player = tag.Value
+            local leaderstats = player:FindFirstChild("leaderstats")
+            
+            if leaderstats then
+                local tokens = leaderstats:FindFirstChild("Tokens")
+                
+                if tokens then
+                    tokens.Value += 1
+                end
+            end
+            
+        end
+        
+    end)
+    
+end
+
+
+-- NPCs que já existem
+for _,obj in pairs(workspace:GetDescendants()) do
+    if obj:IsA("Humanoid") then
+        conectarHumanoid(obj)
+    end
+end
+
+-- NPCs que nascerem depois
+workspace.DescendantAdded:Connect(function(obj)
+    if obj:IsA("Humanoid") then
+        conectarHumanoid(obj)
+    end
+end)
+
+
+
+
+
